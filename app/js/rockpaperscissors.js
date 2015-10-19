@@ -68,12 +68,61 @@ function getWinner(playerMove,computerMove) {
     return winner;
 }
 
-function playToFive() {
+function playTo(max) {
     console.log("Let's play Rock, Paper, Scissors");
+    if (max == null) {
+        max = prompt("Please set the max score for the competition!", "Enter whole number here.");
+        console.log("The max score is " + max +".");
+        if (isNaN(max) || max - Math.floor(max) > 0) {
+            console.log("You can't set max score to " + max + ". Let's set the max score to 5.")
+            max = 5;
+        }
+    } else {
+        console.log("The max score is " + max +".");
+    }
     var playerWins = 0;
     var computerWins = 0;
+    var tiedGames = 0;
+    var error = 0;
+    var total = 0;
     // Write code that plays 'Rock, Paper, Scissors' until either the player or the computer has won five times.
     /* YOUR CODE HERE */
-    return [playerWins, computerWins];
+    // Instead of 5 times. We will play until either player or computer has won times the player chose.
+    while (playerWins < max && computerWins < max) {
+        var yourMove = getPlayerMove();
+        var compMove = getComputerMove();
+        var winner = getWinner(yourMove,compMove);
+        if (winner == "you") {
+            playerWins++;
+            total++;
+            console.log("You choose " + yourMove + ", computer chooses " + compMove + ". You win this game.");
+            console.log("Your score: " + playerWins + " - Computer score: " + computerWins);
+        }
+        else if (winner == "computer") {
+            computerWins++;
+            total++;
+            console.log("You choose " + yourMove + ", computer chooses " + compMove + ".\nComputer wins this game.");
+            console.log("Your score: " + playerWins + " - Computer score: " + computerWins);
+        }
+        else if (winner == "tie") {
+            tiedGames++;
+            total++;
+            console.log("You choose " + yourMove + ", computer chooses " + compMove + ".\nIt's a tied game.");
+            console.log("Your score: " + playerWins + " - Computer score: " + computerWins);
+        }
+        else if (winner == "error") {
+            error++;
+            total++;
+            console.log("You choose " + yourMove + ".")
+            console.log("Waring! Please ONLY choose 'rock', 'paper', or 'scissors'.\nThis game won't count");
+            console.log("Your score: " + playerWins + " - Computer score: " + computerWins);
+        }
+    }
+    if (playerWins == max) {
+        return "Total games played: " + total + ", there are " + tiedGames + " tied games and " + error + " error games." + "\nFinal score: You v.s. Computer: " + playerWins + " - " + computerWins + ".\nYou are the winner.";
+    }
+    else if (computerWins == max) {
+        return "Total games played: " + total + ", there are " + tiedGames + " tied games and " + error + " error games." + "\nFinal score: You v.s. Computer: " + playerWins + " - " + computerWins + ".\nYou are the computer.";
+    }
 }
-
+console.log(playTo());
